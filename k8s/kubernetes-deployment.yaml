@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cart
+  template:
+    metadata:
+      labels:
+        app: cart
+    spec:
+      containers:
+        - image: ph2355/rso-cart:
+          name: cart
+          env:
+            - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+              valueFrom:
+                secretKeyRef:
+                  name: pg-url
+                  key: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+            - name: KUMULUZEE_DATASOURCES0_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: pg-username
+                  key: KUMULUZEE_DATASOURCES0_USERNAME
+            - name: KUMULUZEE_DATASOURCES0_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-pass
+                  key: KUMULUZEE_DATASOURCES0_PASSWORD
+          ports:
+            - containerPort: 8081
+              name: server
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: server
+            initialDelaySeconds: 20
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: server
+            initialDelaySeconds: 20
+            periodSeconds: 3
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8081
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: cart

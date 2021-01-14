@@ -1,0 +1,24 @@
+kumuluzee:
+  datasources:
+    - jndi-name: jdbc/ProductsDS
+      connection-url: jdbc:postgresql://localhost:5432/products
+      username: postgres
+      password: postgres
+      pool:
+        max-size: 2
+  persistence-units:
+    - name: "products-ds"
+      continue-on-error: false
+  health:
+    servlet:
+      mapping: /health
+      enabled: true
+    checks:
+      data-source-health-check:
+        jndi-name: jdbc/ProductsDS
+      disk-space-health-check:
+        threshold: 100000000
+rest-config:
+  string-property: Monday
+  boolean-property: true
+  integer-property: 23
