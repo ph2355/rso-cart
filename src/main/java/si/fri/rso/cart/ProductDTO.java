@@ -8,6 +8,15 @@ public class ProductDTO {
     private String title;
     private Integer price;
     private String description;
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public Integer getId() {
         return id;

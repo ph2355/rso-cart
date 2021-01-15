@@ -31,6 +31,15 @@ public class Product implements Serializable {
     private Integer price;
     @Column(name = "description")
     private String description;
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public Integer getId() {
         return id;

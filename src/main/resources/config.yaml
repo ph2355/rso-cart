@@ -1,4 +1,8 @@
 kumuluzee:
+  name: cart
+  version: 1.0.0
+  environment:
+    name: dev
   datasources:
     - jndi-name: jdbc/ProductsDS
       connection-url: jdbc:postgresql://localhost:5432/products
@@ -18,7 +22,5 @@ kumuluzee:
         jndi-name: jdbc/ProductsDS
       disk-space-health-check:
         threshold: 100000000
-rest-config:
-  string-property: Monday
-  boolean-property: true
-  integer-property: 23
+misc:
+  fault-tolerance-demo: true
